@@ -1,78 +1,77 @@
-import sys
-import random
+# Steps to calculate NRIC number
+# The steps involved in the computation are as follows:
+# Multiply each digit in the NRIC number by its weight i.e. 2 7 6 5 4 3 2 in order.
+# Add together the above products. (the weight determine the
+# If the first letter i.e. UIN of the NRIC starts with T or G, add 4 to the total.
+# Find the remainder of (sum calculated above) mod 11.
+# If the NRIC starts with F or G: 0=X, 1=W, 2=U, 3=T, 4=R, 5=Q, 6=P, 7=N, 8=M, 9=L, 10=K
+# If the NRIC starts with S or T: 0=J, 1=Z, 2=I, 3=H, 4=G, 5=F, 6=E, 7=D, 8=C, 9=B, 10=A
 
-def first_char(val):
-    switch = {
-        0: 'S',
-        1: 'T',
-        2: 'F',
-        3: 'G'
-    }
-    return switch.get(val)
+import random, sys
 
-
-def last_char1(val):
-    switch = {
-        0: 'J',
-        1: 'Z',
-        2: 'I',
-        3: 'H',
-        4: 'G',
-        5: 'F',
-        6: 'E',
-        7: 'D',
-        8: 'C',
-        9: 'B',
-        10: 'A'
-    }
-    return switch.get(val)
+weight = [2, 7, 6, 5, 4, 3, 2]
+first_char_list = ['S', 'T', 'F', 'G']
+singaporean_char = ['J', 'Z', 'I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A']
+foreigner_char = ['X', 'W', 'U', 'T', 'R', 'Q', 'P', 'N', 'M', 'L', 'K']
 
 
-def last_char2(val):
-    switch = {
-        0: 'X',
-        1: 'W',
-        2: 'U',
-        3: 'T',
-        4: 'R',
-        5: 'Q',
-        6: 'P',
-        7: 'N',
-        8: 'M',
-        9: 'L',
-        10: 'K'
-    }
-    return switch.get(val)
-def generate():
-    # this script generates random valid nric numbers
+def generate_nric():
     nric = []
 
-    # generate a random 1st letter
-    a = first_char(random.randint(0,3))
-    nric.append(a)
+    first_letter = first_char_list[random.randint(0, 3)]
+    # print(first_letter)
+    nric.append(first_letter)
+    # print(nric)
 
-    for i in range(7):
-        nric.append(random.randint(0,9))
+    if nric[0] == 'T':
+        i = 0
+        while i < 2:
+            if i == 0:
+                nric.append(random.randint(0, 2))
+            else:
+                nric.append(random.randint(0, 1))
+            i += 1
+        while i < 7:
+            nric.append(random.randint(0, 9))
+            i += 1
+    # nric starting with S, F, G
+    else:
+        i = 0
+        while i < 7:
+            nric.append(random.randint(0, 9))
+            i += 1
 
-    x = (int(nric[1]) * 2) + (int(nric[2]) * 7) + (int(nric[3]) * 6) + (int(nric[4]) * 5) + (int(nric[5]) * 4) + (int(nric[6]) * 3) + (int(nric[7]) * 2)
+    i = 0
+    total_weight = 0
+    while i < 7:
+        total_weight += (int(nric[i + 1]) * weight[i])
+        i += 1
 
     if nric[0] == 'T' or nric[0] == 'G':
-        x = x + 4
+        total_weight += 4
 
-    y = x % 11
+    remainder = total_weight % 11
 
-    if nric[0] == 'S' or nric[0] == 'T':
-        nric.append(last_char1(y))
-    elif nric[0] == 'F' or nric[0] == 'G':
-        nric.append(last_char2(y))
-    nric_result = ''.join(map(str,nric))
-    return nric_result
-    
+    if nric[0] == 'F' or nric[0] == 'G':
+        nric.append(foreigner_char[remainder])
+    elif nric[0] == 'S' or nric[0] == 'T':
+        nric.append(singaporean_char[remainder])
+
+    return nric
+
+
 def main():
-    sys.stdout=open("NRIC.txt","w")
-    for i in range(5000):
-        print(generate())
+    count = 0
+    my_set = set()
+    while count != 5000:
+        # To prevent any duplicated in the nric generated, we put it in a set
+        my_set.add(''.join(map(str, generate_nric())))
+        count = len(my_set)
+
+    sys.stdout = open("NEWNRIC.csv", "w")
+    for n in my_set:
+        print(n)
     sys.stdout.close()
-    
+
 
 main()
