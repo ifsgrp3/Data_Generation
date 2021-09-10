@@ -1,6 +1,7 @@
 import uuid
 import hashlib
-
+import csv
+import random, sys
 
 def hashText(text):
     """
@@ -23,3 +24,15 @@ if __name__ == '__main__':
     hashrs = matchHashedText(hashtest,'123')
     #print("\n")
     #print(hashrs)
+
+
+
+with open('password.csv') as csv_file:
+    csv_reader = csv.reader(csv_file) #delimiter=''
+    sys.stdout = open("password_with_hash1.csv", "w")
+    for row in csv_reader:
+            hashtest = hashText(row[0])
+            _hashedText, salt = hashtest.split(':')
+            print(row[0] + "," + _hashedText + "," + salt)
+    sys.stdout.close()
+
