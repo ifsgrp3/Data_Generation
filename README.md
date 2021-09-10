@@ -1,2 +1,2 @@
 # Data_Generation
-Finalcredential contains 5000 entries of records
+Final_credential_data.csv contains 5000 entries of records
