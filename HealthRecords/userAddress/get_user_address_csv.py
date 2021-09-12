@@ -1,0 +1,15 @@
+import pandas as pd
+import glob
+import csv
+
+path = r'/Users/michelle/PycharmProjects/ifs4205_database/user_address'
+all_files = glob.glob(path + "/*.csv")
+
+li = []
+
+for filename in all_files:
+    df = pd.read_csv(filename)
+    li.append(df)
+
+frame = pd.concat(li, axis=1)
+frame.to_csv("user_address.csv", index=False)
