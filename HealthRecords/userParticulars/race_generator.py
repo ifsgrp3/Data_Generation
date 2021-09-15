@@ -1,7 +1,7 @@
 import random
 import sys
 
-race_list = ["Chinese", "Malay", "Indian", "Eurasian"]
+race_list = ["chinese", "malay", "indian", "others"]
 
 
 def main():
