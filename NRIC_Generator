@@ -10,9 +10,9 @@
 import random, sys
 
 weight = [2, 7, 6, 5, 4, 3, 2]
-first_char_list = ['S', 'T', 'F', 'G']
-singaporean_char = ['J', 'Z', 'I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A']
-foreigner_char = ['X', 'W', 'U', 'T', 'R', 'Q', 'P', 'N', 'M', 'L', 'K']
+first_char_list = ['s', 't', 'f', 'g']
+singaporean_char = ['j', 'z', 'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a']
+foreigner_char = ['x', 'w', 'u', 't', 'r', 'q', 'p', 'n', 'm', 'l', 'k']
 
 
 def generate_nric():
@@ -23,7 +23,7 @@ def generate_nric():
     nric.append(first_letter)
     # print(nric)
 
-    if nric[0] == 'T':
+    if nric[0] == 't':
         i = 0
         while i < 2:
             if i == 0:
@@ -34,7 +34,7 @@ def generate_nric():
         while i < 7:
             nric.append(random.randint(0, 9))
             i += 1
-    # nric starting with S, F, G
+    # nric starting with s, f, g
     else:
         i = 0
         while i < 7:
@@ -47,14 +47,14 @@ def generate_nric():
         total_weight += (int(nric[i + 1]) * weight[i])
         i += 1
 
-    if nric[0] == 'T' or nric[0] == 'G':
+    if nric[0] == 't' or nric[0] == 'g':
         total_weight += 4
 
     remainder = total_weight % 11
 
-    if nric[0] == 'F' or nric[0] == 'G':
+    if nric[0] == 'f' or nric[0] == 'g':
         nric.append(foreigner_char[remainder])
-    elif nric[0] == 'S' or nric[0] == 'T':
+    elif nric[0] == 's' or nric[0] == 't':
         nric.append(singaporean_char[remainder])
 
     return nric
@@ -68,7 +68,7 @@ def main():
         my_set.add(''.join(map(str, generate_nric())))
         count = len(my_set)
 
-    sys.stdout = open("NEWNRIC.csv", "w")
+    sys.stdout = open("NRIC.csv", "w")
     for n in my_set:
         print(n)
     sys.stdout.close()
