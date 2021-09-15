@@ -1,6 +1,6 @@
 import random, sys
 
-area_list = ["North", "South", "East", "West", "Central"]
+area_list = ["north", "south", "east", "west", "central"]
 
 
 def main():
